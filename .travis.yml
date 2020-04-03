@@ -1,0 +1,46 @@
+# need super user access
+sudo: required 
+# need services before commencing steps
+services:
+  - docker
+
+# steps that run before tests or deployment is done
+before_install:
+  - docker build -t anmoldesai4/react-test -f ./client/Dockerfile.dev ./client
+  # - can add more build for server, worker etc. Then test it below
+
+# all commands to be executed. travis ci  watched the output
+# if return code other than 0, then travis considers it failed
+# default behaviour of yarn test is to run it and then put a watcher.
+# travis ci expects test to end and exit successfully to be considered a pass.
+script:
+  - docker run -e CI=true anmoldesai4/react-test yarn run test
+  # run the test here using the image created above.
+
+# add in config for building prod version of docker and push to dockerhub
+# this is after all tests above pass
+after_success:
+  - docker build -t anmoldesai4/multi-client ./client
+  - docker build -t anmoldesai4/multi-nginx ./nginx
+  - docker build -t anmoldesai4/multi-server ./server
+  - docker build -t anmoldesai4/multi-worker ./worker
+  # login to docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push images above to dockerhub
+  - docker push anmoldesai4/multi-client
+  - docker push anmoldesai4/multi-nginx
+  - docker push anmoldesai4/multi-server
+  - docker push anmoldesai4/multi-worker
+
+
+# deploy:
+#   provider: elasticbeanstalk # use these instructions to deploy. i,e ebs instructions
+#   region: "ap-southeast-2"
+#   app: "docker-react"
+#   env: "DockerReact-env"
+#   bucket_name: "elasticbeanstalk-ap-southeast-2-976196051615"
+#   bucket_path: "docker-react" # this is the folder that is created in s3. All projects environment create a folder in this bucket 
+#   on:
+#     branch: master # only deploy when its master branch
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
