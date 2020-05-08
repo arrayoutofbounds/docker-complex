@@ -1,5 +1,5 @@
 # need super user access
-sudo: required 
+sudo: required
 # need services before commencing steps
 services:
   - docker
@@ -32,15 +32,14 @@ after_success:
   - docker push anmoldesai4/multi-server
   - docker push anmoldesai4/multi-worker
 
-
-# deploy:
-#   provider: elasticbeanstalk # use these instructions to deploy. i,e ebs instructions
-#   region: "ap-southeast-2"
-#   app: "docker-react"
-#   env: "DockerReact-env"
-#   bucket_name: "elasticbeanstalk-ap-southeast-2-976196051615"
-#   bucket_path: "docker-react" # this is the folder that is created in s3. All projects environment create a folder in this bucket 
-#   on:
-#     branch: master # only deploy when its master branch
-#   access_key_id: $AWS_ACCESS_KEY
-#   secret_access_key: $AWS_SECRET_KEY
+deploy:
+  provider: elasticbeanstalk # use these instructions to deploy. i,e ebs instructions
+  region: "ap-southeast-2"
+  app: "multi-docker"
+  env: "MultiDocker-env"
+  bucket_name: "elasticbeanstalk-ap-southeast-2-976196051615"
+  bucket_path: "multi-docker" # this is the folder that is created in s3. All projects environment create a folder in this bucket
+  on:
+    branch: master # only deploy when its master branch
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
