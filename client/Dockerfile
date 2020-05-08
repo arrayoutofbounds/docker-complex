@@ -10,7 +10,7 @@ RUN yarn run build
 # Second section is to serve build assets using nginx
 FROM nginx
 # just tells the developer that this container needs to be port 
-# mapped to port 80. However, beanstalk looks at it and knows that 
+# mapped to port 3000. However, beanstalk looks at it and knows that 
 # it has to map all requests to this port automatically.
 EXPOSE 3000
 

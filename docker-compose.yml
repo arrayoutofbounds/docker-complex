@@ -15,7 +15,7 @@ services:
       context: ./nginx
       dockerfile: Dockerfile.dev
     ports:
-      - '3050:80'
+      - '3050:80' # if trying to access containers by nginx, need to send request to port 3050 which then sends it through port 80 in nginx.
   api:
     depends_on:
       - redis
