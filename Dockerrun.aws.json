@@ -1,36 +1,36 @@
 {
-    "AWSEBDockerrunVersion": 2,
-    "containerDefinitions": [
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "client",
+      "image": "anmoldesai4/multi-client",
+      "hostname": "client",
+      "essential": false
+    },
+    {
+      "name": "server",
+      "image": "anmoldesai4/multi-server",
+      "hostname": "api",
+      "essential": false
+    },
+    {
+      "name": "worker",
+      "image": "anmoldesai4/multi-worker",
+      "hostname": "worker",
+      "essential": false
+    },
+    {
+      "name": "nginx",
+      "image": "anmoldesai4/multi-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings": [
         {
-            "name": "client",
-            "image": "anmoldesai4/multi-client",
-            "hostname": "client",
-            "essential": false
-        },
-        {
-            "name": "server",
-            "image": "anmoldesai4/multi-server",
-            "hostname": "api",
-            "essential": false
-        },
-        {
-            "name": "worker",
-            "image": "anmoldesai4/multi-worker",
-            "hostname": "worker",
-            "essential": false
-        },
-        {
-            "name": "nginx",
-            "image": "anmoldesai4/multi-nginx",
-            "hostname": "nginx",
-            "essential": true,
-            "portMappings": [
-                {
-                    "hostPort": 80,
-                    "containerPort": 80
-                }
-            ],
-            "links": ["client", "server "]
+          "hostPort": 80,
+          "containerPort": 80
         }
-    ]
+      ],
+      "links": ["client", "server "]
+    }
+  ]
 }
